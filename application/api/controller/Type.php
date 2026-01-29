@@ -57,7 +57,7 @@ class Type extends Base
             foreach ($list as $index => $item) {
                 $child_total = Db::table('mac_type')->where(['type_pid' => $item['type_id']])->count();
                 if ($child_total > 0) {
-                    $child = Db::table('mac_type')->where(['type_pid' => $item['type_id']])->select();
+                    $child = Db::table('mac_type')->where(['type_pid' => $item['type_id']])->order('type_sort ASC')->select();
                     $list[$index]['child'] = $child;
                 }
             }
