@@ -36,30 +36,28 @@ class Comment extends Base
 
     public function saveData() {
         $param = input();
-
         if($GLOBALS['config']['comment']['verify'] == 1){
             if(!captcha_check($param['verify'])){
-                return ['code'=>1002,'msg'=>lang('verify_err')];
+                return json(['code'=>1002,'msg'=>lang('verify_err')]);
             }
-        }
-
+        } 
         if($GLOBALS['config']['comment']['login'] ==1){
             if(empty(cookie('user_id'))){
-                return ['code' => 1003, 'msg' =>lang('index/require_login')];
+                return json(['code' => 1003, 'msg' =>lang('index/require_login')]);
             }
-            $res = model('User')->checkLogin();
+            $res = model('User')->checkLogin();   
             if($res['code']>1) {
-                return ['code' => 1003, 'msg' => lang('index/require_login')];
+                return json(['code' => 1003, 'msg' => lang('index/require_login')]);
             }
         }
 
         if(empty($param['comment_content'])){
-            return ['code'=>1004,'msg'=>lang('index/require_content')];
+            return json(['code'=>1004,'msg'=>lang('index/require_content')]);
         }
 
         $cookie = 'comment_timespan';
         if(!empty(cookie($cookie))){
-            return ['code'=>1005,'msg'=>lang('frequently')];
+            return json(['code'=>1005,'msg'=>lang('frequently')]);
         }
 
         $param['comment_content']= htmlentities(mac_filter_words($param['comment_content']));
@@ -68,7 +66,7 @@ class Comment extends Base
         // }
 
         if(!in_array($param['comment_mid'],['1','2','3','8','9','11'])){
-            return ['code'=>1006,'msg'=>lang('index/mid_err')];
+            return json(['code'=>1006,'msg'=>lang('index/mid_err')]);
         }
 
         if(empty(cookie('user_id'))){
@@ -95,7 +93,7 @@ class Comment extends Base
         if(!empty($blcaks['black_keyword_list']) && count($blcaks['black_keyword_list']) > 0){
             foreach ($blcaks['black_keyword_list'] as $key => $value) {
                 if(strpos($param['comment_content'], $value) !== false){
-                    return ['code'=>1007,'msg'=>lang('index/blacklist_keyword')];
+                    return json(['code'=>1007,'msg'=>lang('index/blacklist_keyword')]);
                 }
             }
         }
@@ -103,13 +101,14 @@ class Comment extends Base
         if(!empty($blcaks['black_ip_list']) && count($blcaks['black_ip_list']) > 0){
             $client_ip = long2ip($param['comment_ip']);
             if (in_array($client_ip, $blcaks['black_ip_list'])){
-                return ['code'=>1008,'msg'=>lang('index/blacklist_ip')];
+                return json(['code'=>1008,'msg'=>lang('index/blacklist_ip')]);
             }
         }
 
         $res = model('Comment')->saveData($param);
+        slog('评论保存结果: ' . json_encode($res));   
         if($res['code']>1){
-            return $res;
+            return json($res);
         }
         else{
             cookie($cookie, 't', $GLOBALS['config']['comment']['timespan']);
@@ -119,7 +118,8 @@ class Comment extends Base
             else{
                 $res['msg'] = lang('index/thanks_msg');
             }
-            return $res;
+            slog('最终返回结果: ' . json_encode($res));   
+            return json($res);
         }
     }
 
