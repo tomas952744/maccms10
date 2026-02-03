@@ -100,7 +100,6 @@ class User extends Base
 public function ajax_ulog_list()
     {
         $param = input();
-       
         $where = [];
         $where['user_id'] = $GLOBALS['user']['user_id'];
         $param['offset'] = intval($param['offset']) < 1 ? 0 : intval($param['offset']);
