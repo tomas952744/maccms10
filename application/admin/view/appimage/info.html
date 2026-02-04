@@ -1,0 +1,129 @@
+{include file="../../../application/admin/view/public/head" /}
+
+<div class="page-container p10">
+    <form class="layui-form layui-form-pane" method="post" action="">
+        <input id="image_id" name="image_id" type="hidden" value="{$info.image_id|default=''}">
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片类型：</label>
+            <div class="layui-input-block">
+                <select name="image_type" lay-verify="required">
+                    <option value="">请选择类型</option>
+                    <option value="1" {if condition="isset($info.image_type) && $info.image_type eq 1"}selected{/if}>启动页</option>
+                    <option value="2" {if condition="isset($info.image_type) && $info.image_type eq 2"}selected{/if}>Banner广告</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片标题：</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" value="{$info.image_title|default=''}" lay-verify="required" placeholder="请输入图片标题" name="image_title">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片：</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" value="{$info.image_pic|default=''}" lay-verify="required" placeholder="请上传图片" id="image_pic" name="image_pic" readonly>
+                <button type="button" class="layui-btn layui-btn-sm" id="upload_pic">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <div class="mt10" id="pic_preview">
+                    {if condition="isset($info.image_pic) && $info.image_pic"}
+                    <img src="{:mac_url_img($info.image_pic)}" style="max-width:300px;max-height:200px;" />
+                    {/if}
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">跳转链接：</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" value="{$info.image_link|default=''}" placeholder="点击图片跳转的链接（可选）" name="image_link">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序：</label>
+            <div class="layui-input-inline w100">
+                <input type="text" class="layui-input" value="{$info.image_sort|default='0'}" placeholder="排序值越小越靠前" name="image_sort">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">
+                <select name="image_status">
+                    <option value="1" {if condition="!isset($info.image_status) || $info.image_status eq 1"}selected{/if}>启用</option>
+                    <option value="0" {if condition="isset($info.image_status) && $info.image_status eq 0"}selected{/if}>禁用</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" placeholder="备注信息（可选）" name="image_remarks">{$info.image_remarks|default=''}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item center">
+            <div class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="formSubmit" data-child="true">保存</button>
+                <button class="layui-btn layui-btn-warm" type="reset">重置</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+{include file="../../../application/admin/view/public/foot" /}
+
+<script type="text/javascript">
+    layui.use(['form', 'layer', 'upload'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , upload = layui.upload
+            , $ = layui.jquery;
+
+        // 上传图片
+        upload.render({
+            elem: '#upload_pic'
+            , url: '{:url("upload/upload")}'
+            , data: {flag: 'app'}
+            , accept: 'images'
+            , acceptMime: 'image/*'
+            , before: function(obj){
+                layer.load();
+            }
+            , done: function(res){
+                layer.closeAll('loading');
+                if(res.code == 1){
+                    $('#image_pic').val(res.file);
+                    $('#pic_preview').html('<img src="' + res.file + '" style="max-width:300px;max-height:200px;" />');
+                    layer.msg('上传成功');
+                } else {
+                    layer.msg(res.msg || '上传失败');
+                }
+            }
+            , error: function(){
+                layer.closeAll('loading');
+                layer.msg('上传失败');
+            }
+        });
+
+        // 验证
+        form.verify({
+            required: function (value) {
+                if (value == "") {
+                    return "该项为必填项";
+                }
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>
