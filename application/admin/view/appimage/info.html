@@ -90,10 +90,9 @@
         // 上传图片
         upload.render({
             elem: '#upload_pic'
-            , url: '{:url("upload/upload")}'
-            , data: {flag: 'app'}
-            , accept: 'images'
-            , acceptMime: 'image/*'
+
+            , url: '{:url("upload/upload")}?flag=app'
+            , method: 'post'
             , before: function(obj){
                 layer.load();
             }
