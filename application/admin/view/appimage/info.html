@@ -20,20 +20,14 @@
             <div class="layui-input-block">
                 <input type="text" class="layui-input" value="{$info.image_title|default=''}" lay-verify="required" placeholder="请输入图片标题" name="image_title">
             </div>
-        </div>
-
+        </div>   
         <div class="layui-form-item">
             <label class="layui-form-label">图片：</label>
-            <div class="layui-input-block">
-                <input type="text" class="layui-input" value="{$info.image_pic|default=''}" lay-verify="required" placeholder="请上传图片" id="image_pic" name="image_pic" readonly>
-                <button type="button" class="layui-btn layui-btn-sm" id="upload_pic">
-                    <i class="layui-icon">&#xe67c;</i>上传图片
-                </button>
-                <div class="mt10" id="pic_preview">
-                    {if condition="isset($info.image_pic) && $info.image_pic"}
-                    <img src="{:mac_url_img($info.image_pic)}" style="max-width:300px;max-height:200px;" />
-                    {/if}
-                </div>
+            <div class="layui-input-inline w400 upload">
+                <input type="text" class="layui-input upload-input" style="max-width:100%;" value="{$info.image_pic|default=''}" lay-verify="required" placeholder="请上传图片" id="image_pic" name="image_pic" readonly>
+            </div>
+            <div class="layui-input-inline">
+                <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:'upload-thumb'}}"  id="upload1">上传图片</button>
             </div>
         </div>
 
@@ -89,25 +83,31 @@
 
         // 上传图片
         upload.render({
-            elem: '#upload_pic'
-
-            , url: '{:url("upload/upload")}?flag=app'
+            elem: '.layui-upload'
+            , url: "{:url('upload/upload')}?flag=app"
             , method: 'post'
             , before: function(obj){
-                layer.load();
+                console.log('开始上传文件');
+                layer.msg('上传中...', {time:3000000});
             }
-            , done: function(res){
-                layer.closeAll('loading');
-                if(res.code == 1){
-                    $('#image_pic').val(res.file);
-                    $('#pic_preview').html('<img src="' + res.file + '" style="max-width:300px;max-height:200px;" />');
-                    layer.msg('上传成功');
-                } else {
-                    layer.msg(res.msg || '上传失败');
+            , done: function(res, index, upload) {
+                var obj = this.item;
+                console.log('上传返回:', res);  // 调试信息
+                if (res.code == 0) {
+                    layer.closeAll();
+                    layer.msg(res.msg);
+                    return false;
                 }
+                layer.closeAll();
+                var input = $(obj).parent().parent().find('.upload-input');
+                if ($(obj).attr('lay-type') == 'image') {
+                    input.siblings('img').attr('src', res.data.file).show();
+                }
+                input.val(res.data.file);
+                layer.msg('上传成功');
             }
             , error: function(){
-                layer.closeAll('loading');
+                layer.closeAll();
                 layer.msg('上传失败');
             }
         });
