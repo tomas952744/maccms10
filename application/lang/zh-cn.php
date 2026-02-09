@@ -916,6 +916,11 @@ https://www.baidu.com/123.jpg
     'admin/system/config/mainland_ip_only_allow'=>'只允许',
     'admin/system/config/mainland_ip_not_allow'=>'不允许',
     'admin/system/config/mainland_ip_limit_tip'=>'只允许：只允许大陆地区的IP地址访问；不允许：不允许大陆地区的IP地址访问；',
+    'admin/system/config/site_banner' => '网站Banner',
+    'admin/system/config/site_banner_tip' => '每行一个图片地址',
+    'admin/system/config/upload_banner_tip' => '上传的图片会自动附加到文本框中',
+    'upload_pic_one_by_one' => '逐张上传',
+    'admin/system/config/site_app_launch_image' => 'App启动图',
 
     'admin/system/config/wall_filter'=>'假墙防御',
     'admin/system/config/wall_unicode'=>'编码方式',

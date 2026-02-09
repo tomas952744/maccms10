@@ -217,3 +217,8 @@ API 接口说明 V2（基于当前实现）
 - 详情：/api.php/manga/get_detail/
   - 参数：id：number（漫画ID）
   - 返回：{"code":1,"msg":"获取成功","info":{...}}
+
+12) Config（配置）
+- 获取配置：/api.php/config/get_config/
+  - 参数：无
+  - 返回：{"code":1,"msg":"获取成功","data":{"site_banner":["..."], "site_app_launch_image":"..."}}
