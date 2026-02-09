@@ -112,6 +112,29 @@
                                 id="upload2">{:lang('upload_pic')}</button>
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{:lang('admin/system/config/site_banner')}：</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="site[site_banner]" id="hidden_site_banner" value="{$config['site']['site_banner']}">
+                            <div id="banner-inputs-container"></div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline ">
+                            <button type="button" class="layui-btn" id="upload_banner">{:lang('upload_pic_one_by_one')}</button>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">{:lang('admin/system/config/site_app_launch_image')}：</label>
+                        <div class="layui-input-inline w600">
+                            <input type="text" name="site[site_app_launch_image]" placeholder="" value="{$config['site']['site_app_launch_image']}" class="layui-input upload-input">
+                        </div>
+                        <div class="layui-input-inline ">
+                            <button type="button" class="layui-btn layui-upload" lay-data="{data:{thumb:0,thumb_class:''}}" id="upload_app_launch_image">{:lang('upload_pic')}</button>
+                        </div>
+                    </div>
 
 
                     <div class="layui-form-item">
@@ -822,7 +845,7 @@
             }
         });
 
-        $('.upload-input').hover(function (e) {
+        $(document).on('mouseenter', '.upload-input', function (e) {
             var e = window.event || e;
             var imgsrc = $(this).val();
             if (imgsrc.trim() == "") { return; }
@@ -831,11 +854,72 @@
             $(".showpic").css({ left: left, top: top, display: "" });
             if (imgsrc.indexOf('://') < 0) { imgsrc = ROOT_PATH + '/' + imgsrc; } else { imgsrc = imgsrc.replace('mac:', 'http:'); }
             $(".showpic_img").attr("src", imgsrc);
-        }, function (e) {
+        }).on('mouseleave', '.upload-input', function (e) {
             $(".showpic").css("display", "none");
         });
 
 
+        // Banner upload
+        var bannerContainer = $('#banner-inputs-container');
+        var hiddenBannerInput = $('#hidden_site_banner');
+
+        function addBannerInput(url) {
+            var item = $('<div class="layui-form-item" style="margin-bottom: 10px;">' +
+                '<div class="layui-input-inline w600">' +
+                '<input type="text" value="" class="layui-input upload-input banner-url-input">' +
+                '</div>' +
+                '<div class="layui-input-inline">' +
+                '<button type="button" class="layui-btn layui-btn-danger remove-banner-btn">{:lang(\'del\')}</button>' +
+                '</div>' +
+                '</div>');
+            item.find('.banner-url-input').val(url);
+            bannerContainer.append(item);
+            updateHiddenBannerInput();
+        }
+
+        function updateHiddenBannerInput() {
+            var urls = [];
+            $('.banner-url-input').each(function() {
+                urls.push($(this).val());
+            });
+            hiddenBannerInput.val(urls.join('\n'));
+        }
+
+        bannerContainer.on('click', '.remove-banner-btn', function() {
+            $(this).closest('.layui-form-item').remove();
+            updateHiddenBannerInput();
+        });
+        
+        bannerContainer.on('input', '.banner-url-input', function() {
+            updateHiddenBannerInput();
+        });
+
+        function initBannerInputs() {
+            var initialUrls = hiddenBannerInput.val().split('\n').filter(function(url) {
+                return url.trim() !== '';
+            });
+            initialUrls.forEach(function(url) {
+                addBannerInput(url);
+            });
+        }
+
+        initBannerInputs();
+
+        upload.render({
+            elem: '#upload_banner'
+            , url: "{:url('upload/upload')}?flag=site"
+            , method: 'post'
+            , before: function (input) {
+                layer.msg("{:lang('upload_ing')}", { time: 3000000 });
+            }, done: function (res, index, upload) {
+                if (res.code == 0) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                layer.closeAll();
+                addBannerInput(res.data.file);
+            }
+        });
     });
 
     function test_cache() {
