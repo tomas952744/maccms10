@@ -587,6 +587,10 @@ class Ajax extends Base
             $field = 'vod_id,vod_name,vod_actor,vod_hits,vod_hits_day,vod_hits_week,vod_hits_month,vod_time,vod_remarks,vod_score,vod_area,vod_year,vod_tag,vod_pic,vod_pic_thumb,vod_pic_slide,vod_douban_score';
 //            $list = model('Vod')->getListByCond($offset, $limit, $where, $order, $field, []);
             $list = model('Vod')->getListByCond($offset, $limit, $where, $order, $field);
+            //把vod_time 字段转换为时间字符串
+            foreach ($list as &$value) {
+                $value['vod_time'] = date('Y-m-d H:i:s', $value['vod_time']);
+            }
         }
         // 返回
         return json([
