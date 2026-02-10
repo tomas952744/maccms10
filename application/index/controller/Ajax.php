@@ -549,7 +549,7 @@ class Ajax extends Base
             $where['type_id'] = (int)$param['type_id'];
         }
         if (isset($param['id'])) {
-            $where['vod_id'] = $param['id'];
+            $where['vod_id'] =(int) $param['id'];
         }
 //        if (isset($param['type_id_1'])) {
 //            $where['type_id_1'] = (int)$param['type_id_1'];
@@ -561,7 +561,7 @@ class Ajax extends Base
             $where['vod_tag'] = ['like', '%' . $this->format_sql_string($param['vod_tag']) . '%'];
         }
         if (isset($param['vod_name']) && strlen($param['vod_name']) > 0) {
-            $where['vod_name'] = ['like', '%'.$param['vod_name'].'%'];
+            $where['vod_name'] = ['like', '%'.$this->format_sql_string($param['vod_name']).'%'];
         }
         if (isset($param['vod_blurb']) && strlen($param['vod_blurb']) > 0) {
             $where['vod_blurb'] = ['like', '%' . $this->format_sql_string($param['vod_blurb']) . '%'];
