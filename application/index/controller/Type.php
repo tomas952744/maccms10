@@ -1,25 +1,9 @@
 <?php
-
-namespace app\api\controller;
-
+namespace app\index\controller;
 use think\Db;
 use think\Request;
-
 class Type extends Base
 {
-    use PublicApi;
-    public function __construct()
-    {
-        parent::__construct();
-        $this->check_config();
-
-    }
-
-    public function index()
-    {
-
-    }
-
     /**
      *  获取分类树
      *
@@ -57,7 +41,7 @@ class Type extends Base
             foreach ($list as $index => $item) {
                 $child_total = Db::table('mac_type')->where(['type_pid' => $item['type_id']])->count();
                 if ($child_total > 0) {
-                    $child = Db::table('mac_type')->where(['type_pid' => $item['type_id']])->select();
+                    $child = Db::table('mac_type')->where(['type_pid' => $item['type_id']])->order('type_sort ASC')->select();
                     $list[$index]['child'] = $child;
                 }
             }
@@ -68,25 +52,6 @@ class Type extends Base
             'msg'  => '获取成功',
             'info' => [
                 'total'  => $total,
-                'rows'   => $list,
-            ],
-        ]);
-    }
-
-    /**
-     * 查询首页分类顶部导航栏
-     *
-     * @return \think\response\Json
-     */
-    public function get_all_list()
-    {
-        $list = Db::table('mac_type')->where(['type_pid'=> 0])->column('type_id,type_name,type_en');
-        // 返回
-        return json([
-            'code' => 1,
-            'msg'  => '获取成功',
-            'info' => [
-                'total'  => count($list),
                 'rows'   => $list,
             ],
         ]);

@@ -60,7 +60,7 @@ class Vod extends Base
             $where['vod_tag'] = ['like', '%' . $this->format_sql_string($param['vod_tag']) . '%'];
         }
         if (isset($param['vod_name']) && strlen($param['vod_name']) > 0) {
-            $where['vod_name'] = ['like', '%'.$this->format_sql_string($param['vod_name']).'%'];
+            $where['vod_name'] = ['like', '%' . $this->format_sql_string($param['vod_name']) . '%'];
         }
         if (isset($param['vod_blurb']) && strlen($param['vod_blurb']) > 0) {
             $where['vod_blurb'] = ['like', '%' . $this->format_sql_string($param['vod_blurb']) . '%'];
@@ -83,7 +83,7 @@ class Vod extends Base
             if (strlen($param['orderby']) > 0) {
                 $order = 'vod_' . $param['orderby'] . " DESC";
             }
-            $field = 'vod_id,vod_name,vod_actor,vod_hits,vod_hits_day,vod_hits_week,vod_hits_month,vod_time,vod_remarks,vod_score,vod_area,vod_year,vod_tag,vod_pic,vod_pic_thumb,vod_pic_slide,vod_douban_score';
+            $field = 'vod_id,vod_name,vod_actor,vod_hits,vod_hits_day,vod_hits_week,vod_hits_month,vod_time,vod_remarks,vod_score,vod_area,vod_year';
 //            $list = model('Vod')->getListByCond($offset, $limit, $where, $order, $field, []);
             $list = model('Vod')->getListByCond($offset, $limit, $where, $order, $field);
         }

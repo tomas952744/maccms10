@@ -25,24 +25,6 @@ class Ajax extends Validate
     ];
 
     protected $scene = [
-        'get_list' => [
-            'type_id',
-        ],
-         'get_vod_list' => [
-            'id',
-            'offset',
-            'limit',
-            'orderby',
-            'type_id',
-//            'type_id_1',
-            'vod_letter',
-            'vod_name',
-            'vod_tag',
-            'vod_blurb',
-            'vod_class',
-        ],
-        'get_vod_detail' => [
-            'vod_id',
-        ],
+        
     ];
 }
