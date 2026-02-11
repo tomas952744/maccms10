@@ -449,34 +449,6 @@ return array (
         'controller' => 'images',
         'action' => 'sync',
       ),
-      37 => 
-      array (
-        'show' => 1,
-        'name' => '图片管理',
-        'controller' => 'appimage',
-        'action' => 'index',
-      ),
-      3701 => 
-      array (
-        'show' => 0,
-        'name' => '--图片信息维护',
-        'controller' => 'appimage',
-        'action' => 'info',
-      ),
-      3702 => 
-      array (
-        'show' => 0,
-        'name' => '--图片批量修改',
-        'controller' => 'appimage',
-        'action' => 'batch',
-      ),
-      3703 => 
-      array (
-        'show' => 0,
-        'name' => '--图片删除',
-        'controller' => 'appimage',
-        'action' => 'del',
-      ),
     ),
   ),
   5 => 

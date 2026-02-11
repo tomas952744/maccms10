@@ -962,27 +962,6 @@ CREATE TABLE `mac_website` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
 
 
--- ----------------------------
--- Table structure for mac_app_image
--- ----------------------------
-DROP TABLE IF EXISTS `mac_app_image`;
-CREATE TABLE `mac_app_image` (
-  `image_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '图片ID',
-  `image_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '图片类型(1=启动页,2=Banner广告)',
-  `image_title` varchar(255) NOT NULL DEFAULT '' COMMENT '图片标题',
-  `image_pic` varchar(1024) NOT NULL DEFAULT '' COMMENT '图片地址',
-  `image_link` varchar(500) NOT NULL DEFAULT '' COMMENT '跳转链接',
-  `image_sort` int(10) NOT NULL DEFAULT '0' COMMENT '排序',
-  `image_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态(0=禁用,1=启用)',
-  `image_remarks` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-  `image_time_add` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `image_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`image_id`),
-  KEY `image_type` (`image_type`),
-  KEY `image_status` (`image_status`),
-  KEY `image_sort` (`image_sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='APP图片管理表';
-
 
 -- ----------------------------
 -- Table structure for mac_vod_search
