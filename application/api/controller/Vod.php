@@ -120,7 +120,7 @@ class Vod extends Base
             ]);
         }
 
-        $res = Db::table('mac_vod')->where(['vod_id' => $param['vod_id']])->find();
+        $res = Db::table('mac_vod')->where(['vod_id' => $param['vod_id']])->select();
         //判断vod_rel_vod 字段是否为空
         if (!empty($res['vod_rel_vod'])) {
             $field = 'vod_id,vod_name,vod_actor,vod_hits,vod_hits_day,vod_hits_week,vod_hits_month,vod_time,vod_remarks,vod_score,vod_area,vod_year,vod_tag,vod_pic,vod_pic_thumb,vod_pic_slide,vod_douban_score';
